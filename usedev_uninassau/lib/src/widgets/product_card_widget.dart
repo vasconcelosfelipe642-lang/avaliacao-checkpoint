@@ -6,12 +6,14 @@ class ProductCardWidget extends StatelessWidget {
     required this.nome,
     required this.url,
     required this.preco,
+    this.onTap,
     super.key,
   });
 
   final String nome;
   final String url;
   final String preco;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,9 @@ class ProductCardWidget extends StatelessWidget {
       margin: .all(20),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
       elevation: 5,
-      child: Column(
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
         crossAxisAlignment: .stretch,
         children: [
           Image.network(url, height: 200, width: double.infinity, fit: .cover),
@@ -45,6 +49,7 @@ class ProductCardWidget extends StatelessWidget {
             ),
           ),
         ],
+        ),
       ),
     );
   }
