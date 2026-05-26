@@ -49,6 +49,12 @@ class CartService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> clear() async {
+    await Future<void>.delayed(Duration.zero);
+    _items.clear();
+    notifyListeners();
+  }
+
   void _changeQuantity(int productId, int delta) {
     final index = _items.indexWhere((item) => item.product.id == productId);
     if (index < 0) return;
