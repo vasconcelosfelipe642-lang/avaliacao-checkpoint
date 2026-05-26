@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:usedev_uninassau/src/screens/cart_screen.dart';
+import 'package:usedev_uninassau/src/screens/login_screen.dart';
 import 'package:usedev_uninassau/src/services/cart_service.dart';
 
 class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
@@ -29,7 +30,15 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
       title: Image.asset('assets/logo_usedev.png', height: 40),
       centerTitle: true,
       actions: [
-        const Icon(Icons.person_outline, size: 40),
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const LoginScreen()),
+            );
+          },
+          icon: const Icon(Icons.person_outline, size: 40),
+        ),
         const SizedBox(width: 10),
         ListenableBuilder(
           listenable: cart,
