@@ -21,11 +21,12 @@ class CartScreen extends StatelessWidget {
     if (!context.mounted) return;
 
     if (!loggedIn) {
-      await Navigator.push(
+      final result = await Navigator.push<bool>(
         context,
         MaterialPageRoute(builder: (_) => const LoginScreen()),
       );
-      return;
+      if (!context.mounted) return;
+      if (result != true) return; // Cancelou login
     }
 
     await CartService.instance.clear();
@@ -42,6 +43,7 @@ class CartScreen extends StatelessWidget {
       ),
     );
 
+    if (!context.mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (_) => const InitialScreen()),
       (route) => false,
