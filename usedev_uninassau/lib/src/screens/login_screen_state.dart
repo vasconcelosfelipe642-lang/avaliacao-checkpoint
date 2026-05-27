@@ -12,7 +12,9 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _checkExistingSession());
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _checkExistingSession(),
+    );
   }
 
   Future<void> _checkExistingSession() async {
@@ -36,21 +38,40 @@ class LoginScreenState extends State<LoginScreen> {
 
     setState(() => _isSubmitting = true);
     try {
-      await Future<void>.delayed(const Duration(milliseconds: 500));
+      final username = _userController.text.trim();
+      final password = _passwordController.text;
 
-      await AuthService.instance.saveSession(_userController.text.trim());
-      if (!context.mounted) return;
+      // Fazer login com validação real
+      await AuthService.instance.login(username, password);
 
+      if (!mounted) return;
+
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Login realizado!',
+            'Login realizado com sucesso!',
             style: TextStyle(fontFamily: GoogleFonts.poppins().fontFamily),
           ),
           backgroundColor: _purple,
         ),
       );
-      Navigator.of(context).pop();
+      if (!mounted) return;
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pop(true);
+    } catch (e) {
+      if (!mounted) return;
+
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Erro: $e',
+            style: TextStyle(fontFamily: GoogleFonts.poppins().fontFamily),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
     } finally {
       if (mounted) {
         setState(() => _isSubmitting = false);
@@ -179,4 +200,3 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
