@@ -20,6 +20,7 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
   Widget build(BuildContext context) {
     final cart = CartService.instance;
 
+
     return AppBar(
       leading: showBackButton
           ? IconButton(
@@ -32,9 +33,10 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.push(
+            Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (_) => const LoginScreen()),
+              (route) => route.isFirst,
             );
           },
           icon: const Icon(Icons.person_outline, size: 40),
@@ -47,9 +49,10 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
 
             return IconButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (_) => const CartScreen()),
+                  (route) => route.isFirst,
                 );
               },
               icon: Badge(
